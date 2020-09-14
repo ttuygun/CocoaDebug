@@ -193,7 +193,16 @@ NSURLConnectionDownloadDelegate>
                 completionHandler(data, response, error);
             }
         };
-        returnTask = originalMethod(__self, sel, unuse, proxyCompletionHandler);
+        if (@available(iOS 13.0, *)) {
+            returnTask = originalMethod(__self, sel, unuse, proxyCompletionHandler);
+        } else {
+            if (completionHandler == nil) {
+                /// When lower than iOS13, the delegate method will be executed when completionHandler is nil
+                returnTask = originalMethod(__self, sel, unuse, completionHandler);
+            } else {
+                returnTask = originalMethod(__self, sel, unuse, proxyCompletionHandler);
+            }
+        }
         return returnTask;
     };
     originalMethod = (DataTaskConstructor *)replaceMethod(sel, imp_implementationWithBlock(replacedMethod), [NSURLSession class], NO);
@@ -210,7 +219,16 @@ NSURLConnectionDownloadDelegate>
                 completionHandler(data, response, error);
             }
         };
-        returnTask = originalMethod(__self, sel, unuse1, unuse2, proxyCompletionHandler);
+        if (@available(iOS 13.0, *)) {
+            returnTask = originalMethod(__self, sel, unuse1, unuse2, proxyCompletionHandler);
+        } else {
+            if (completionHandler == nil) {
+                /// When lower than iOS13, the delegate method will be executed when completionHandler is nil
+                returnTask = originalMethod(__self, sel, unuse1, unuse2, completionHandler);
+            } else {
+                returnTask = originalMethod(__self, sel, unuse1, unuse2, proxyCompletionHandler);
+            }
+        }
         return returnTask;
     };
     originalMethod = (UploadTaskConstructor *)replaceMethod(sel, imp_implementationWithBlock(replacedMethod), [NSURLSession class], NO);
@@ -226,12 +244,21 @@ NSURLConnectionDownloadDelegate>
             if (location) {
                 [receiveData appendData:[NSData dataWithContentsOfURL:location]];
             }
-            [self recordHTTPRequest:returnTask.currentRequest response:returnTask.response receiveData:[NSData data] startDate:startDate error:error];
+            [self recordHTTPRequest:returnTask.currentRequest response:returnTask.response receiveData:receiveData startDate:startDate error:error];
             if (completionHandler) {// fix crash
                 completionHandler(location, response, error);
             }
         };
-        returnTask = originalMethod(__self, sel, unuse, proxyCompletionHandler);
+        if (@available(iOS 13.0, *)) {
+            returnTask = originalMethod(__self, sel, unuse, proxyCompletionHandler);
+        } else {
+            if (completionHandler == nil) {
+                /// When lower than iOS13, the delegate method will be executed when completionHandler is nil
+                returnTask = originalMethod(__self, sel, unuse, completionHandler);
+            } else {
+                returnTask = originalMethod(__self, sel, unuse, proxyCompletionHandler);
+            }
+        }
         return returnTask;
     };
     originalMethod = (DownloadTaskConstructor *)replaceMethod(sel, imp_implementationWithBlock(replacedMethod), [NSURLSession class], NO);
@@ -323,6 +350,9 @@ NSURLConnectionDownloadDelegate>
         if (![_NetworkHelper shared].isNetworkEnable) {
             return originalURLConnectionConstructor(__self, sel, request, delegate, s);
         }
+        if (request == nil) {
+            return originalURLConnectionConstructor(__self, sel, request, delegate, s);
+        }
         if ([delegate isKindOfClass:self]) {
             return originalURLConnectionConstructor(__self, sel, request, delegate, s);
         }
@@ -342,9 +372,23 @@ NSURLConnectionDownloadDelegate>
         if (![_NetworkHelper shared].isNetworkEnable) {
             return originalURLConnectionSyncConstructor(__self, sel, request, response, error);
         }
+        if (request == nil) {
+            return originalURLConnectionSyncConstructor(__self, sel, request, response, error);
+        }
         NSDate *startDate = [NSDate date];
-        NSData *originalReturnValue = originalURLConnectionSyncConstructor(__self, sel, request, response, error);
-        [self recordHTTPRequest:request response:*response receiveData:originalReturnValue startDate:startDate error:*error];
+        NSData *originalReturnValue = nil;
+        NSURLResponse * __autoreleasing *fixResponse = response;
+        NSError * __autoreleasing *fixError = error;
+        if (response == nil) {
+            NSURLResponse  * __autoreleasing tempResponse = nil;
+            fixResponse = &tempResponse;
+        }
+        if (error == nil) {
+            NSError * __autoreleasing tempError = nil;
+            fixError = &tempError;
+        }
+        originalReturnValue = originalURLConnectionSyncConstructor(__self, sel, request, fixResponse, fixError);
+        [self recordHTTPRequest:request response:*fixResponse receiveData:originalReturnValue startDate:startDate error:*fixError];
         return originalReturnValue;
     };
     originalURLConnectionSyncConstructor = (URLConnectionSyncConstructor *)replaceMethod(sel, imp_implementationWithBlock(replacedURLConnectionSyncConstructor), [NSURLConnection class], YES);
@@ -355,6 +399,10 @@ NSURLConnectionDownloadDelegate>
     __block URLConnectionAsyncConstructor *originalURLConnectionAsyncConstructor;
     URLConnectionAsyncConstructorBlock replacedURLConnectionSyncConstructor = ^(id __self, NSURLRequest *request, NSOperationQueue *queue, URLConnectionAsyncConstructorCompletionBlock block) {
         if (![_NetworkHelper shared].isNetworkEnable) {
+            originalURLConnectionAsyncConstructor(__self, sel, request, queue, block);
+            return;
+        }
+        if (request == nil) {
             originalURLConnectionAsyncConstructor(__self, sel, request, queue, block);
             return;
         }
