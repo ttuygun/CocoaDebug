@@ -144,11 +144,11 @@ class Bubble: UIView {
         self.sizeToFit()
         
         
-        let gradientLayer = CAGradientLayer()
-        gradientLayer.frame = bounds
-        gradientLayer.cornerRadius = _width/2
-        gradientLayer.colors = Color.colorGradientHead
-        self.layer.addSublayer(gradientLayer)
+//        let gradientLayer = CAGradientLayer()
+//        gradientLayer.frame = bounds
+//        gradientLayer.cornerRadius = _width/2
+//        gradientLayer.colors = Color.colorGradientHead
+//        self.layer.addSublayer(gradientLayer)
         
         
         if let numberLabel = numberLabel {
