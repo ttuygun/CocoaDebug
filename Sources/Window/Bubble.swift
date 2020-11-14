@@ -152,8 +152,8 @@ class Bubble: UIView {
         
         
         if let numberLabel = numberLabel {
-            numberLabel.layer.cornerRadius = _width/2;
-            numberLabel.layer.masksToBounds = true
+//            numberLabel.layer.cornerRadius = _width/2;
+//            numberLabel.layer.masksToBounds = true
 //            numberLabel.backgroundColor = .red
             numberLabel.text = String(networkNumber)
             numberLabel.textColor = .white
