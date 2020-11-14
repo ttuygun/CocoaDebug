@@ -21,11 +21,9 @@ Pod::Spec.new do |s|
                           'Sources/CustomHTTPProtocol/**/*.m',
                           'Sources/LeaksFinder/**/*.m',
                           'Sources/Logs/**/*.m',
-                          'Sources/Monitor/**/*.m',
                           'Sources/Network/**/*.m',
                           'Sources/Sandbox/**/*.m',
                           'Sources/Swizzling/**/*.m',
-                          'Sources/GCDTimer/**/*.m',
                           'Sources/Window/**/*.m',
                           ]
   s.dependency "FBRetainCycleDetector"
