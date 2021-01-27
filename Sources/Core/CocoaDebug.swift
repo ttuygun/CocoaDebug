@@ -36,6 +36,8 @@ import UIKit
     
     //MARK: - CocoaDebug enable
     @objc public static func enable() {
+        let ignoredPrefixLogs = ["\'转换track\'", "\'[RNFlipper]", "\'BugReporting extraData:\'", "\'PerformanceLogger:"]
+
         initializationMethod(serverURL: serverURL, ignoredURLs: ignoredURLs, onlyURLs: onlyURLs, ignoredPrefixLogs: ignoredPrefixLogs, onlyPrefixLogs: onlyPrefixLogs, additionalViewController: additionalViewController, emailToRecipients: emailToRecipients, emailCcRecipients: emailCcRecipients, mainColor: mainColor, protobufTransferMap: protobufTransferMap)
     }
     
