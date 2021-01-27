@@ -26,6 +26,8 @@ Pod::Spec.new do |s|
                           'Sources/Swizzling/**/*.m',
                           'Sources/Window/**/*.m',
                           'Sources/fishhook/**/*.c',
+                          'Sources/Feeds/**/*.m',
                           ]
   s.dependency "React/Core"
+  s.dependency "SHPReactNativeSDK/Core"
 end
