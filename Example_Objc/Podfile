@@ -1,5 +1,30 @@
+plugin 'cocoapods-binary'
+source 'https://github.com/CocoaPods/Specs.git'
+source 'https://git.garena.com/ios-dev/btlibrary.git'
+source 'https://git.garena.com/shopee/ios/shopee-specs-library.git'
+source 'https://github.com/goinstant/pods-specs-public.git'
+source 'https://git.garena.com/shopee/ssz-client/ios/common/ssp-specs.git'
+
 target 'Example_Objc' do
     use_frameworks!
     pod 'CocoaDebug', :path=> '../../CocoaDebug'
     pod 'Reveal-SDK', '26'
+    
+    pod 'React', '0.59.9.18', :subspecs => [
+      'Core',
+      'RCTImage',
+      'RCTNetwork',
+      'RCTText',
+      'RCTWebSocket',
+      'RCTActionSheet',
+      'RCTAnimation',
+      'RCTGeolocation',
+      'RCTLinkingIOS',
+      'RCTSettings',
+      'RCTVibration',
+      'RCTPushNotification',
+      'CxxBridge',
+      'DevSupport',
+      'RCTCameraRoll',
+    ]
 end
